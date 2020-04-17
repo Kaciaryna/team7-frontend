@@ -1,12 +1,12 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <h4 class="card-title">{{loan.address.street}}</h4>
+      <h4 class="card-title">{{loan.getAddress().getStreet()}}</h4>
       <h5 class="card-subtitle">{{subtitle}}</h5>
     </div>
     <div class="card-footer">
       <span></span>
-      <img :src="loan.user.avatarUrl" alt="userAvatar" />
+      <img :src="loan.getUser().getAvatarUrl()" alt="userAvatar" />
     </div>
   </div>
 </template>
@@ -22,7 +22,8 @@
     },
     computed: {
       subtitle() {
-        return `${this.loan.address.state},  ${this.loan.address.city} ${this.loan.address.zip}`
+        const address = this.loan.getAddress();
+        return `${address.getState()},  ${address.getCity()} ${address.getZip()}`
       }
     }
   }

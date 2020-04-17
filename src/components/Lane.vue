@@ -1,8 +1,8 @@
 <template>
   <div class="lane">
-    <h3 class="lane-name">{{lane.name}}<span></span></h3>
+    <h3 class="lane-name">{{lane.name}} {{loans.length}}<span></span></h3>
     <div class="cards-list">
-      <Card v-for="loan in loans" :key="loan.id" :loan="loan" />
+      <Card v-for="loan in loans" :key="loan.getId()" :loan="loan" />
     </div>
   </div>
 </template>

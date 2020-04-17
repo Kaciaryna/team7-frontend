@@ -1,13 +1,16 @@
 <template>
   <div class="dashboard">
     <div class="lanes">
-      <Lane v-for="lane in lanes" :key="lane.name" :lane="lane" :loans="loans" />
+      <Lane :lane="lanes[0]" :loans="draftLoans" />
+      <Lane :lane="lanes[1]" :loans="submittedLoans" />
+      <Lane :lane="lanes[2]" :loans="approvedLoans" />
+      <Lane :lane="lanes[3]" :loans="rejectedLoans" />
     </div>
   </div>
 
 </template>
 <script>
-
+  import {Loan} from 'domain-ps/lib/definitions/loan_pb';
   import Lane from '@/components/Lane.vue'
 
   export default {
@@ -31,8 +34,11 @@
         default: () => [],
       },
     },
-    methods: {
-
+    computed: {
+      draftLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.DRAFT) },
+      submittedLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.SUBMITTED) },
+      approvedLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.APPROVED) },
+      rejectedLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.REJECTED) },
     }
   }
 </script>
