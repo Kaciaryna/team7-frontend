@@ -1,32 +1,56 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div id="app" class="board">
+    <div class="nav"></div>
+    <Dashboard
+      :loans="loans"
+    />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
 
-#nav {
-  padding: 30px;
+  import Dashboard from '@/components/Dashboard.vue'
+  import { loans } from "./api/data";
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  export default {
+    name: 'App',
+    components: {
+      Dashboard
+    },
+    data() {
+      return {
+        loans: loans,
+      }
+    },
   }
-}
+</script>
+
+<style lang="scss">
+  @import "@/styles/variables";
+  @import "@/styles/normalize";
+
+  html,
+  body {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .board {
+    font-family: Open Sans, Arial, sans-serif;
+    color: $text-color;
+    display: flex;
+    height: 100%;
+  }
+
+  .nav {
+    background: $brand-color;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    width: 64px;
+  }
 </style>
