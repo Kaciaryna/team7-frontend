@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard">
+    <h1 class="dashboard-heading">Loan Pipeline</h1>
     <div class="lanes">
       <Lane :lane="lanes[0]" :loans="draftLoans" />
       <Lane :lane="lanes[1]" :loans="submittedLoans" />
@@ -46,11 +47,17 @@
 <style scoped lang="scss">
   .dashboard {
     padding: 24px 74px 16px 32px;
+
+    &-heading {
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 38px;
+      margin-bottom: 24px;
+      margin-top: 0;
+    }
   }
 
-
   .lanes {
-    border-radius: 4px;
     display: flex;
     height: 100%;
   }

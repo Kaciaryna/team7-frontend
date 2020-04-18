@@ -1,42 +1,44 @@
 <template>
   <div class="lane">
-    <h3 class="lane-name">{{lane.name}} {{loans.length}}<span></span></h3>
+    <h3 class="lane-name">{{lane.name}}<span> {{loans.length}}</span></h3>
     <div class="cards-list">
-      <Card v-for="loan in loans" :key="loan.getId()" :loan="loan" />
+      <Card v-for="loan in loans" :key="loan.getId()" :loan="loan"/>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from 'vue';
+  import Component from "vue-class-component";
 
   import Card from '@/components/Card.vue'
+  import {Prop} from "vue-property-decorator";
 
-  export default {
-    name: 'Lane',
+  import {Loan} from 'domain-ps/lib/definitions/loan_pb';
+
+  @Component({
     components: {
-      Card
-    },
-    props: {
-      lane: {
-        type: Object,
-        default: () => {},
-      },
-      loans: {
-        type: Array,
-        default: () => [],
-      },
-    },
+      Card,
+    }
+  })
+  export default class Lane extends Vue {
+    @Prop()
+    lane!: Object;
+
+    @Prop()
+    loans!: Loan[];
   }
 </script>
 
 <style scoped lang="scss">
   @import "@/styles/variables";
 
-  $lane-height: calc(100vh - 24px - 16px);
+  $lane-height: calc(100vh - 24px - 16px - 64px);
   $lane-header-height: 25px + 40px;
 
   .lane {
     background: $background-color;
+    border-radius: 4px;
     height: $lane-height;
     margin-right: 24px;
     padding: 16px;
@@ -55,10 +57,15 @@
     margin-bottom: 40px;
     margin-top: 0;
     text-transform: capitalize;
+
+    span {
+      color: $text-color-grey;
+    }
   }
 
   .cards-list {
-    max-height: calc(100vh - 24px - 16px - 25px - 40px);
+    max-height: calc(100vh - 24px - 16px * 3 - 25px - 40px - 64px);
+    min-height: calc(100vh - 24px - 16px * 3 - 25px - 40px - 64px);
     overflow-y: scroll;
   }
 </style>

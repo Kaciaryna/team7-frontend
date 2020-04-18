@@ -1,6 +1,8 @@
 <template>
   <div id="app" class="board">
-    <div class="nav"></div>
+    <div class="nav">
+      <img class="logo" src="/assets/logo.png" alt="logo">
+    </div>
     <Dashboard
       :loans="loans"
     />
@@ -88,8 +90,13 @@
   .nav {
     background: $brand-color;
     height: 100vh;
+    padding: 13px 0 0 13px;
     position: sticky;
     top: 0;
     width: 64px;
+  }
+
+  .logo {
+    width: 38px;
   }
 </style>
