@@ -17,13 +17,14 @@
 </template>
 
 <script lang="ts">
-  import Date from '@/helpers/date_time_formatter';
   import Modal from '@/components/Modal.vue';
   import Component from "vue-class-component";
   import Vue from "vue";
-  import {Prop, Watch} from "vue-property-decorator";
+  import {Prop} from "vue-property-decorator";
   import {Loan} from "domain-ps/lib/definitions/loan_pb";
   import {Address} from "domain-ps/lib/definitions/address_pb";
+  import {shortDate} from "@/utls/date_time";
+  import {DateTimeUTC} from "domain-ps/lib/definitions/types/date_pb";
 
   @Component({
     components: {
@@ -50,7 +51,7 @@
     }
 
     get date() {
-      return Date.short(this.loan.getUpdatedAt())
+      return shortDate(this.loan.getUpdatedAt() as DateTimeUTC);
     }
   }
 </script>

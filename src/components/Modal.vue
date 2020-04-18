@@ -35,8 +35,8 @@
 </template>
 
 <script>
-  import Date from '@/helpers/date_time_formatter';
   import Dropdown from '@/components/Dropdown.vue';
+  import {shortTime} from "@/utls/date_time";
 
   export default {
     name: 'Modal',
@@ -62,10 +62,10 @@
         return `${address.getState()},  ${address.getCity()} ${address.getZip()}`
       },
       updatedAt() {
-        return Date.full(this.loan.getUpdatedAt())
+        return shortTime(this.loan.getUpdatedAt());
       },
       createdAt() {
-        return Date.full(this.loan.getCreatedAt())
+        return shortTime(this.loan.getCreatedAt());
       },
     },
     methods: {
