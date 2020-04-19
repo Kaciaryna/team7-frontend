@@ -44,12 +44,12 @@
       this.showModal = false;
     }
 
-    get subtitle() {
+    get subtitle(): string {
       const address = this.loan.getAddress() as Address;
       return `${address.getState()},  ${address.getCity()} ${address.getZip()}`
     }
 
-    get date() {
+    get date(): string {
       return shortDate(this.loan.getUpdatedAt() as number);
     }
   }
