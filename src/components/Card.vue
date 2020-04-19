@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="openModal">
+  <div class="card" @click="openModal" :class="updatedClass">
     <div class="card-header">
       <h4 class="card-title">{{loan.getAddress().getStreet()}}</h4>
       <h5 class="card-subtitle">{{subtitle}}</h5>
@@ -20,7 +20,7 @@
   import Modal from '@/components/Modal.vue';
   import Component from "vue-class-component";
   import Vue from "vue";
-  import {Prop} from "vue-property-decorator";
+  import {Prop, Watch} from "vue-property-decorator";
   import {Loan} from "domain-ts/lib/definitions/loan_pb";
   import {Address} from "domain-ts/lib/definitions/address_pb";
   import {shortDate} from "@/utls/date_time";
@@ -31,10 +31,20 @@
     }
   })
   export default class Card extends Vue {
+    showModal = false;
+    justUpdated = false;
+
     @Prop()
     loan!: Loan;
 
-    showModal = false;
+
+    @Watch("loan", {deep: true})
+    updateAnimation() {
+      if (!this.justUpdated) {
+        this.justUpdated = true;
+        setTimeout(() => this.justUpdated = false, 300)
+      }
+    }
 
     openModal() {
       this.showModal = true;
@@ -51,6 +61,12 @@
 
     get date(): string {
       return shortDate(this.loan.getUpdatedAt() as number);
+    }
+
+    get updatedClass(): string | undefined {
+      if (this.justUpdated) {
+        return "just-updated";
+      }
     }
   }
 </script>
@@ -113,6 +129,19 @@
         margin-right: 4px;
         margin-bottom: 1px;
       }
+    }
+
+    @keyframes yellow-fade {
+      from {
+        background: #FEE7AB;
+      }
+      to {
+        background: white;
+      }
+    }
+
+    &.just-updated {
+      animation: yellow-fade 250ms;
     }
   }
 </style>

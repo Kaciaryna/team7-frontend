@@ -8,7 +8,7 @@
           <h5 class="modal-subtitle">{{subtitle}}</h5>
 
           <label for="modal-notes" class="modal-notes-title">Notes</label>
-          <textarea id="modal-notes" class="modal-notes" v-model="loanNotes">
+          <textarea id="modal-notes" class="modal-notes" v-model="loanNotes" :class="updatedClass">
           </textarea>
 
           <button class="primary-button" @click="updateLoan">Update</button>
@@ -51,14 +51,24 @@
   })
   export default class Modal extends Vue {
     loanNotes!: string;
+    justUpdated = false;
 
     @Prop()
     loan!: Loan;
 
     @Watch("loan", {deep: true, immediate: true})
-    onLoanChange(loan: Loan) {
+    updateNotes(loan: Loan) {
       this.loanNotes = loan.getNotes();
     }
+
+    @Watch("loan", {deep: true})
+    updateAnimation() {
+      if (!this.justUpdated) {
+        this.justUpdated = true;
+        setTimeout(() => this.justUpdated = false, 300)
+      }
+    }
+
 
     data() {
       return {
@@ -98,6 +108,12 @@
 
     get createdAt(): string {
       return shortTime(this.loan.getCreatedAt());
+    }
+
+    get updatedClass(): string | undefined {
+      if (this.justUpdated) {
+        return "just-updated";
+      }
     }
   }
 </script>
@@ -207,6 +223,19 @@
       &:focus {
         border-color: $border-hover-color;
         outline: none;
+      }
+
+      @keyframes yellow-fade {
+        from {
+          background: #FEE7AB;
+        }
+        to {
+          background: white;
+        }
+      }
+
+      &.just-updated {
+        animation: yellow-fade 250ms;
       }
     }
 
