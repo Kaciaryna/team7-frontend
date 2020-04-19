@@ -11,12 +11,13 @@
           <textarea id="modal-notes" class="modal-notes" v-model="loanNotes">
           </textarea>
 
-          <button class="primary-button" @click="update">Update</button>
+          <button class="primary-button" @click="updateLoan">Update</button>
         </div>
         <div class="modal-actions">
           <div class="modal-dropdowns">
-            <Dropdown title="Status" dropdown-value="Draft" img-src="/assets/draft-icon.svg" />
-            <Dropdown title="Lender" :dropdown-value="loan.getUser().getName()" :img-src="loan.getUser().getAvatarUrl()" />
+            <Dropdown title="Status" dropdown-value="Draft" img-src="/assets/draft-icon.svg"/>
+            <Dropdown title="Lender" :dropdown-value="loan.getUser().getName()"
+                      :img-src="loan.getUser().getAvatarUrl()"/>
           </div>
 
           <div class="modal-updates">
@@ -33,54 +34,70 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from "vue";
   import Dropdown from '@/components/Dropdown.vue';
   import {shortTime} from "@/utls/date_time";
   import {updateLoan} from "@/utls/grpc";
+  import Component from "vue-class-component";
+  import {Prop, Watch} from "vue-property-decorator";
+  import {Loan} from "domain-ts/lib/definitions/loan_pb";
+  import {Address} from "domain-ts/lib/definitions/address_pb";
 
-  export default {
-    name: 'Modal',
+  @Component({
     components: {
-      Dropdown
-    },
-    props: {
-      loan: {
-        type: Object,
-        default: () => {},
-      },
-    },
+      Dropdown,
+    }
+  })
+  export default class Modal extends Vue {
+    loanNotes!: string;
+
+    @Prop()
+    loan!: Loan;
+
+    @Watch("loan", {deep: true, immediate: true})
+    onLoanChange(loan: Loan) {
+      this.loanNotes = loan.getNotes();
+    }
+
     data() {
       return {
-        loanNotes: this.loan.getNotes(),
-      }
-    },
-    mounted: function() {
-      document.addEventListener("keydown", e => {
-        if (e.which === 27) {
-          this.close();
-        }
-      });
-    },
-    computed: {
-      subtitle() {
-        const address = this.loan.getAddress();
-        return `${address.getState()},  ${address.getCity()} ${address.getZip()}`
-      },
-      updatedAt() {
-        return shortTime(this.loan.getUpdatedAt());
-      },
-      createdAt() {
-        return shortTime(this.loan.getCreatedAt());
-      },
-    },
-    methods: {
-      close() {
-        this.$emit("close");
-      },
-      update() {
-        this.loan.setNotes(this.loanNotes);
-        updateLoan(this.loan);
-      }
+        escPressed: ((e: KeyboardEvent) => {
+          if (e.key === 'Escape') {
+            this.close();
+          }
+        }),
+      };
+    }
+
+    mounted() {
+      document.addEventListener("keydown", this.$data.escPressed);
+    }
+
+    destroyed() {
+      document.removeEventListener("keydown", this.$data.escPressed);
+    }
+
+    close() {
+      this.$emit("close");
+    }
+
+    updateLoan() {
+      this.loan.setNotes(this.loanNotes);
+      updateLoan(this.loan);
+    }
+
+    get subtitle(): string {
+      const address = this.loan.getAddress() as Address;
+      return `${address.getState()},  ${address.getCity()} ${address.getZip()}`
+    }
+
+    get updatedAt(): string {
+      return shortTime(this.loan.getUpdatedAt());
+    }
+
+    get createdAt(): string {
+      return shortTime(this.loan.getCreatedAt());
     }
   }
 </script>
@@ -170,6 +187,7 @@
         line-height: 19px;
         margin: 0;
       }
+
       span {
         font-size: 14px;
         font-weight: 600;

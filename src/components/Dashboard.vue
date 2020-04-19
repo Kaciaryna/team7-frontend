@@ -10,36 +10,44 @@
   </div>
 
 </template>
-<script>
+<script lang="ts">
+  import Vue from "vue";
   import {Loan} from 'domain-ts/lib/definitions/loan_pb';
   import Lane from '@/components/Lane.vue'
+  import Component from "vue-class-component";
+  import {ILane} from "@/models/Lane";
+  import {Prop} from "vue-property-decorator";
 
-  export default {
-    name: 'Dashboard',
+  @Component({
     components: {
-      Lane
-    },
-    data() {
-      return {
-        lanes: [
-          { name: "draft" },
-          { name: "submitted" },
-          { name: "approved" },
-          { name: "rejected"}
-        ]
-      }
-    },
-    props: {
-      loans: {
-        type: Array,
-        default: () => [],
-      },
-    },
-    computed: {
-      draftLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.DRAFT) },
-      submittedLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.SUBMITTED) },
-      approvedLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.APPROVED) },
-      rejectedLoans() { return this.loans.filter(loan => loan.getState() === Loan.State.REJECTED) },
+      Lane,
+    }
+  })
+  export default class Dashboard extends Vue {
+    lanes: ILane[] = [
+      {name: "draft"},
+      {name: "submitted"},
+      {name: "approved"},
+      {name: "rejected"}
+    ];
+
+    @Prop({default: []})
+    loans!: Loan[];
+
+    get draftLoans(): Loan[] {
+      return this.loans.filter(loan => loan.getState() === Loan.State.DRAFT)
+    }
+
+    get submittedLoans(): Loan[] {
+      return this.loans.filter(loan => loan.getState() === Loan.State.SUBMITTED)
+    }
+
+    get approvedLoans(): Loan[] {
+      return this.loans.filter(loan => loan.getState() === Loan.State.APPROVED)
+    }
+
+    get rejectedLoans(): Loan[] {
+      return this.loans.filter(loan => loan.getState() === Loan.State.REJECTED)
     }
   }
 </script>

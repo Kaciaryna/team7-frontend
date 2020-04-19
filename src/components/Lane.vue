@@ -15,6 +15,7 @@
   import {Prop} from "vue-property-decorator";
 
   import {Loan} from 'domain-ts/lib/definitions/loan_pb';
+  import {ILane} from "@/models/Lane";
 
   @Component({
     components: {
@@ -23,7 +24,7 @@
   })
   export default class Lane extends Vue {
     @Prop()
-    lane!: Object;
+    lane!: ILane;
 
     @Prop()
     loans!: Loan[];
