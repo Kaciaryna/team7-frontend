@@ -11,7 +11,7 @@
 
 </template>
 <script>
-  import {Loan} from 'domain-ps/lib/definitions/loan_pb';
+  import {Loan} from 'domain-ts/lib/definitions/loan_pb';
   import Lane from '@/components/Lane.vue'
 
   export default {

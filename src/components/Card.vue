@@ -21,10 +21,10 @@
   import Component from "vue-class-component";
   import Vue from "vue";
   import {Prop} from "vue-property-decorator";
-  import {Loan} from "domain-ps/lib/definitions/loan_pb";
-  import {Address} from "domain-ps/lib/definitions/address_pb";
+  import {Loan} from "domain-ts/lib/definitions/loan_pb";
+  import {Address} from "domain-ts/lib/definitions/address_pb";
   import {shortDate} from "@/utls/date_time";
-  import {DateTimeUTC} from "domain-ps/lib/definitions/types/date_pb";
+  import {DateTimeUTC} from "domain-ts/lib/definitions/types/date_pb";
 
   @Component({
     components: {

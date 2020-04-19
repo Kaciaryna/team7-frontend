@@ -2,7 +2,7 @@
   <div class="modal-mask">
     <div class="modal-wrapper">
       <div class="modal">
-        <img class="modal-close" @click.stop="close" src="/assets/icon-сlose.svg" alt="close">
+        <img class="modal-close" @click.stop="close" src="/assets/icon-close.svg" alt="close">
         <div class="modal-content">
           <h4 class="modal-title">{{loan.getAddress().getStreet()}}</h4>
           <h5 class="modal-subtitle">{{subtitle}}</h5>

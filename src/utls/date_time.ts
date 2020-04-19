@@ -1,4 +1,4 @@
-import {DateTimeUTC} from "domain-ps/lib/definitions/types/date_pb";
+import {DateTimeUTC} from "domain-ts/lib/definitions/types/date_pb";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 

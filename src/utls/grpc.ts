@@ -1,9 +1,9 @@
 import {grpc} from "@improbable-eng/grpc-web";
 
-import {LoansService} from 'domain-ps/lib/definitions/api/private/loans_service_pb_service';
-import {AllLoansResponse, ClientData} from 'domain-ps/lib/definitions/api/private/loans_service_pb';
+import {LoansService} from 'domain-ts/lib/definitions/api/private/loans_service_pb_service';
+import {AllLoansResponse, ClientData} from 'domain-ts/lib/definitions/api/private/loans_service_pb';
 import {Empty} from 'google-protobuf/google/protobuf/empty_pb'
-import {Loan} from "domain-ps/lib/definitions/loan_pb";
+import {Loan} from "domain-ts/lib/definitions/loan_pb";
 
 const HOST = "http://45.79.77.254:10368";
 

@@ -14,7 +14,7 @@
   import Card from '@/components/Card.vue'
   import {Prop} from "vue-property-decorator";
 
-  import {Loan} from 'domain-ps/lib/definitions/loan_pb';
+  import {Loan} from 'domain-ts/lib/definitions/loan_pb';
 
   @Component({
     components: {
