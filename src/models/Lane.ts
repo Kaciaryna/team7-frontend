@@ -1,3 +1,4 @@
 export interface ILane {
-  name: string;
+  readonly id: number;
+  readonly name: string;
 }

@@ -15,7 +15,7 @@
         </div>
         <div class="modal-actions">
           <div class="modal-dropdowns">
-            <Dropdown title="Status" dropdown-value="Draft" img-src="/assets/draft-icon.svg"/>
+            <Dropdown title="Status" :dropdown-value="stateName" img-src="/assets/draft-icon.svg"/>
             <Dropdown title="Lender" :dropdown-value="loan.getUser().getName()"
                       :img-src="loan.getUser().getAvatarUrl()"/>
           </div>
@@ -43,6 +43,7 @@
   import {Prop, Watch} from "vue-property-decorator";
   import {Loan} from "domain-ts/lib/definitions/loan_pb";
   import {Address} from "domain-ts/lib/definitions/address_pb";
+  import State = Loan.State;
 
   @Component({
     components: {
@@ -69,7 +70,6 @@
       }
     }
 
-
     data() {
       return {
         escPressed: ((e: KeyboardEvent) => {
@@ -95,6 +95,19 @@
     updateLoan() {
       this.loan.setNotes(this.loanNotes);
       updateLoan(this.loan);
+    }
+
+    get stateName(): string {
+      switch (this.loan.getState()) {
+        case State.DRAFT:
+          return "Draft";
+        case State.SUBMITTED:
+          return "Submitted";
+        case State.APPROVED:
+          return "Approved";
+        case State.REJECTED:
+          return "Rejected";
+      }
     }
 
     get subtitle(): string {

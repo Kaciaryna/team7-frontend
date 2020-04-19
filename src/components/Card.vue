@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="openModal" :class="updatedClass">
+  <div class="card" @click="openModal" :class="updatedClass" :data-loan-id="loan.getId()">
     <div class="card-header">
       <h4 class="card-title">{{loan.getAddress().getStreet()}}</h4>
       <h5 class="card-subtitle">{{subtitle}}</h5>
@@ -142,6 +142,20 @@
 
     &.just-updated {
       animation: yellow-fade 250ms;
+    }
+
+    &.sortable-chosen, &.sortable-drag {
+      background: #8CC1E7;
+    }
+
+    &.sortable-ghost {
+      background: white;
+      border: 4px #8CC1E7 dashed;
+      color: white;
+
+      .card-footer {
+        display: none;
+      }
     }
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="lane">
     <h3 class="lane-name">{{lane.name}}<span> {{loans.length}}</span></h3>
-    <div class="cards-list">
+    <div class="cards-list" :data-state="lane.id">
       <Card v-for="loan in orderedLoans" :key="loan.getId()" :loan="loan"/>
     </div>
   </div>
@@ -16,6 +16,8 @@
 
   import {Loan} from 'domain-ts/lib/definitions/loan_pb';
   import {ILane} from "@/models/Lane";
+  import Sortable from "sortablejs";
+  import {ILoanStateChange} from "@/models/Loan";
 
   @Component({
     components: {
@@ -31,6 +33,22 @@
 
     get orderedLoans(): Loan[] {
       return this.loans.sort((a, b) => b.getUpdatedAt() - a.getUpdatedAt());
+    }
+
+    mounted() {
+      const container = this.$el.querySelector(".cards-list");
+      new Sortable(container as HTMLElement, {
+        group: "cards-list",
+        ghostClass: "sortable-ghost",
+        chosenClass: "sortable-chosen",
+        dragClass: "sortable-drag",
+        onEnd: (event) => {
+          this.$emit("loan-state-changed", {
+            loanId: parseInt(event.item.dataset["loanId"] || "-1"),
+            state: parseInt(event.to.dataset["state"] || "-1"),
+          } as ILoanStateChange);
+        },
+      });
     }
   }
 </script>

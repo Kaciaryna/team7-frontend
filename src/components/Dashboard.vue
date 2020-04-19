@@ -2,10 +2,10 @@
   <div class="dashboard">
     <h1 class="dashboard-heading">Loan Pipeline</h1>
     <div class="lanes">
-      <Lane :lane="lanes[0]" :loans="draftLoans" />
-      <Lane :lane="lanes[1]" :loans="submittedLoans" />
-      <Lane :lane="lanes[2]" :loans="approvedLoans" />
-      <Lane :lane="lanes[3]" :loans="rejectedLoans" />
+      <Lane :lane="lanes[0]" :loans="draftLoans" @loan-state-changed="loanStateChanged"/>
+      <Lane :lane="lanes[1]" :loans="submittedLoans" @loan-state-changed="loanStateChanged"/>
+      <Lane :lane="lanes[2]" :loans="approvedLoans" @loan-state-changed="loanStateChanged"/>
+      <Lane :lane="lanes[3]" :loans="rejectedLoans" @loan-state-changed="loanStateChanged"/>
     </div>
   </div>
 
@@ -17,6 +17,8 @@
   import Component from "vue-class-component";
   import {ILane} from "@/models/Lane";
   import {Prop} from "vue-property-decorator";
+  import {ILoanStateChange} from "@/models/Loan";
+  import {updateLoan} from "@/utls/grpc";
 
   @Component({
     components: {
@@ -25,29 +27,37 @@
   })
   export default class Dashboard extends Vue {
     lanes: ILane[] = [
-      {name: "draft"},
-      {name: "submitted"},
-      {name: "approved"},
-      {name: "rejected"}
+      {id: Loan.State.DRAFT, name: "draft"},
+      {id: Loan.State.SUBMITTED, name: "submitted"},
+      {id: Loan.State.APPROVED, name: "approved"},
+      {id: Loan.State.REJECTED, name: "rejected"}
     ];
 
     @Prop({default: []})
     loans!: Loan[];
 
+    loanStateChanged(change: ILoanStateChange) {
+      const updatedLoan = this.loans.find(l => l.getId() === change.loanId);
+      if (updatedLoan) {
+        updatedLoan.setState(change.state);
+        updateLoan(updatedLoan);
+      }
+    }
+
     get draftLoans(): Loan[] {
-      return this.loans.filter(loan => loan.getState() === Loan.State.DRAFT)
+      return this.loans.filter(loan => loan.getState() === Loan.State.DRAFT);
     }
 
     get submittedLoans(): Loan[] {
-      return this.loans.filter(loan => loan.getState() === Loan.State.SUBMITTED)
+      return this.loans.filter(loan => loan.getState() === Loan.State.SUBMITTED);
     }
 
     get approvedLoans(): Loan[] {
-      return this.loans.filter(loan => loan.getState() === Loan.State.APPROVED)
+      return this.loans.filter(loan => loan.getState() === Loan.State.APPROVED);
     }
 
     get rejectedLoans(): Loan[] {
-      return this.loans.filter(loan => loan.getState() === Loan.State.REJECTED)
+      return this.loans.filter(loan => loan.getState() === Loan.State.REJECTED);
     }
   }
 </script>
