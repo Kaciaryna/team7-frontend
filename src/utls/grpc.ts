@@ -1,9 +1,9 @@
 import {grpc} from "@improbable-eng/grpc-web";
 
 import {LoansService} from 'domain-ts/lib/definitions/api/private/loans_service_pb_service';
-import {AllLoansResponse, ClientData} from 'domain-ts/lib/definitions/api/private/loans_service_pb';
 import {Empty} from 'google-protobuf/google/protobuf/empty_pb'
 import {Loan} from "domain-ts/lib/definitions/loan_pb";
+import {WebClient} from "domain-ts/lib/definitions/api/web_client_pb";
 
 const HOST = "http://45.79.77.254:10368";
 
@@ -13,21 +13,30 @@ function onEnd(code: grpc.Code, msg: string | undefined, trailers: grpc.Metadata
   }
 }
 
-export function loadAllLoans(callback: (loans: Loan[]) => void) {
+export function loadLoans(callback: (loan: Loan) => void) {
   grpc.invoke(LoansService.LoadAll, {
     request: new Empty(),
     host: HOST,
-    onMessage: (loans: AllLoansResponse) => callback(loans.getLoansList()),
+    onMessage: (loan: Loan) => callback(loan),
+    onEnd: onEnd,
+  });
+}
+
+export function updateLoan(loan: Loan) {
+  grpc.invoke(LoansService.Update, {
+    request: loan,
+    host: HOST,
+    onMessage: () => {},
     onEnd: onEnd,
   });
 }
 
 export function listenToLoanUpdates(callback: (loan: Loan) => void) {
-  const clientData = new ClientData();
+  const clientData = new WebClient();
   const randomClientId = +new Date();
   clientData.setId(randomClientId);
 
-  grpc.invoke(LoansService.ListenToLoanUpdates, {
+  grpc.invoke(LoansService.ListenToUpdates, {
     request: clientData,
     host: HOST,
     onMessage: (loan: Loan) => callback(loan),

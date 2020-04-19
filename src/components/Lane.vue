@@ -2,7 +2,7 @@
   <div class="lane">
     <h3 class="lane-name">{{lane.name}}<span> {{loans.length}}</span></h3>
     <div class="cards-list">
-      <Card v-for="loan in loans" :key="loan.getId()" :loan="loan"/>
+      <Card v-for="loan in orderedLoans" :key="loan.getId()" :loan="loan"/>
     </div>
   </div>
 </template>
@@ -27,6 +27,10 @@
 
     @Prop()
     loans!: Loan[];
+
+    get orderedLoans(): Loan[] {
+      return this.loans.sort((a, b) => b.getUpdatedAt() - a.getUpdatedAt());
+    }
   }
 </script>
 

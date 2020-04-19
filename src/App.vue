@@ -12,7 +12,7 @@
 <script>
   import Dashboard from '@/components/Dashboard.vue'
 
-  import {listenToLoanUpdates, loadAllLoans} from "@/utls/grpc";
+  import {listenToLoanUpdates, loadLoans} from "@/utls/grpc";
 
   export default {
     name: 'App',
@@ -25,7 +25,7 @@
       }
     },
     mounted() {
-      loadAllLoans((loans) => this.loans = loans);
+      loadLoans((loan) => this.loans.push(loan));
       listenToLoanUpdates((newLoan) => {
         this.$set(
           this.loans,

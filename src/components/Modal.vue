@@ -8,11 +8,10 @@
           <h5 class="modal-subtitle">{{subtitle}}</h5>
 
           <label for="modal-notes" class="modal-notes-title">Notes</label>
-          <textarea id="modal-notes" class="modal-notes">
-            {{loan.getNotes()}}
+          <textarea id="modal-notes" class="modal-notes" v-model="loanNotes">
           </textarea>
 
-          <button class="primary-button">Update</button>
+          <button class="primary-button" @click="update">Update</button>
         </div>
         <div class="modal-actions">
           <div class="modal-dropdowns">
@@ -37,6 +36,7 @@
 <script>
   import Dropdown from '@/components/Dropdown.vue';
   import {shortTime} from "@/utls/date_time";
+  import {updateLoan} from "@/utls/grpc";
 
   export default {
     name: 'Modal',
@@ -48,6 +48,11 @@
         type: Object,
         default: () => {},
       },
+    },
+    data() {
+      return {
+        loanNotes: this.loan.getNotes(),
+      }
     },
     mounted: function() {
       document.addEventListener("keydown", e => {
@@ -71,6 +76,10 @@
     methods: {
       close() {
         this.$emit("close");
+      },
+      update() {
+        this.loan.setNotes(this.loanNotes);
+        updateLoan(this.loan);
       }
     }
   }

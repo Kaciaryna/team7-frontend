@@ -24,7 +24,6 @@
   import {Loan} from "domain-ts/lib/definitions/loan_pb";
   import {Address} from "domain-ts/lib/definitions/address_pb";
   import {shortDate} from "@/utls/date_time";
-  import {DateTimeUTC} from "domain-ts/lib/definitions/types/date_pb";
 
   @Component({
     components: {
@@ -51,7 +50,7 @@
     }
 
     get date() {
-      return shortDate(this.loan.getUpdatedAt() as DateTimeUTC);
+      return shortDate(this.loan.getUpdatedAt() as number);
     }
   }
 </script>

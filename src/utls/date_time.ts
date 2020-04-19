@@ -1,12 +1,12 @@
-import {DateTimeUTC} from "domain-ts/lib/definitions/types/date_pb";
-
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export function shortDate(date: DateTimeUTC): string {
-  return `${date.getDay()} ${MONTHS[date.getMonth() - 1]} ${date.getYear()}`;
+export function shortDate(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-export function shortTime(date: DateTimeUTC): string {
-  return `${date.getDay()} ${MONTHS[date.getMonth() - 1]} ${date.getYear()}, ${date.getHour()}:${date.getMinute()} UTC`;
+export function shortTime(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()} UTC`;
 }
 
