@@ -5,7 +5,7 @@ import {Empty} from 'google-protobuf/google/protobuf/empty_pb'
 import {Loan} from "domain-ts/lib/definitions/loan_pb";
 import {WebClient} from "domain-ts/lib/definitions/api/web_client_pb";
 
-const HOST = "http://45.79.77.254:10368";
+const host = "http://45.79.77.254:10368";
 
 function onEnd(code: grpc.Code, msg: string | undefined, trailers: grpc.Metadata) {
   if (code !== grpc.Code.OK) {
@@ -13,33 +13,35 @@ function onEnd(code: grpc.Code, msg: string | undefined, trailers: grpc.Metadata
   }
 }
 
-export function loadLoans(callback: (loan: Loan) => void) {
+function noop() {}
+
+export function loadLoans(onMessage: (loan: Loan) => void) {
   grpc.invoke(LoansService.LoadAll, {
     request: new Empty(),
-    host: HOST,
-    onMessage: (loan: Loan) => callback(loan),
-    onEnd: onEnd,
+    host,
+    onMessage,
+    onEnd,
   });
 }
 
 export function updateLoan(loan: Loan) {
   grpc.invoke(LoansService.Update, {
     request: loan,
-    host: HOST,
-    onMessage: () => {},
-    onEnd: onEnd,
+    host,
+    onMessage: noop,
+    onEnd,
   });
 }
 
-export function listenToLoanUpdates(callback: (loan: Loan) => void) {
+export function listenToLoanUpdates(onMessage: (loan: Loan) => void) {
   const clientData = new WebClient();
   const randomClientId = +new Date();
   clientData.setId(randomClientId);
 
   grpc.invoke(LoansService.ListenToUpdates, {
     request: clientData,
-    host: HOST,
-    onMessage: (loan: Loan) => callback(loan),
-    onEnd: onEnd,
+    host,
+    onMessage,
+    onEnd,
   });
 }
