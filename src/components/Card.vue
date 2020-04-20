@@ -150,7 +150,7 @@
 
     &.sortable-ghost {
       background: white;
-      border: 4px #8CC1E7 dashed;
+      border: 3px #8CC1E7 dashed;
       color: white;
 
       .card-footer {
