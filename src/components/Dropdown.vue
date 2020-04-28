@@ -8,17 +8,21 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'Dropdown',
-    props: {
-      title: String,
-      dropdownValue: String,
-      imgSrc: String,
-    },
-    computed: {
+<script lang="ts">
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {Prop} from "vue-property-decorator";
 
-    }
+  @Component
+  export default class Dropdown extends Vue {
+    @Prop()
+    title!: string;
+
+    @Prop()
+    dropdownValue!: string;
+
+    @Prop()
+    imgSrc!: string;
   }
 </script>
 
