@@ -5,7 +5,7 @@ import {Empty} from 'google-protobuf/google/protobuf/empty_pb'
 import {Loan} from "domain-ts/lib/definitions/loan_pb";
 import {WebClient} from "domain-ts/lib/definitions/api/web_client_pb";
 
-const host = "http://45.79.77.254:10368";
+const host = "http://localhost:10368";
 
 function onEnd(code: grpc.Code, msg: string | undefined, trailers: grpc.Metadata) {
   if (code !== grpc.Code.OK) {
