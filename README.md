@@ -16,7 +16,7 @@ Simple front-end implementation using Vue-cli and TypeScript.
 
 Interesting stuff:
 
-* `src/components` — Vue class components build with TypeScript.
+* `src/components` — Vue class components built with TypeScript.
 * `src/utils/grpc.ts` —  Implementation for the typed grpc client.
 * `src/router/*` — simple SPA router.
 * `Hackstreet — Team7 Slides.pdf` — slides for the presentation.
