@@ -11,7 +11,7 @@
     "@types/sortablejs": "^1.10.4",
     "core-js": "^3.6.4",
     "domain-ts": "https://gitpkg.now.sh/0x000000/team7-domain/build/typescript?master",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "sortablejs": "^1.10.2",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
